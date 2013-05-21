@@ -1,2 +1,6 @@
 .vagrant
 **.swp
+.idea/*
+source/html/.idea/*
+.settings/*
+*.DS_Store
