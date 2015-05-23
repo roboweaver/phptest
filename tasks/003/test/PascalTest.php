@@ -10,6 +10,8 @@ class PascalTest extends PHPUnit_Framework_TestCase {
      * Test small triangle (minimal padding)
      */
     function testSmallTriangle() {
+        // Line width ends up being 9 with 4 on each side of first line
+        // and only one character spacing
         $expected = <<<EOD
     1    
    1 1   
@@ -29,6 +31,19 @@ EOD;
      */
     function testBigTriangle() {
         /** TODO - find out why this has extra padding on it
+         * 
+         * Lines are 57 characters long (28 on each side)
+         * Character padding has one leading, and 5 max
+         * Each number takes up 6 spaces, so 1 digit has 
+         * 5 following it, two digit has 4 and three has 3.
+         * (10 -1)*6 = 54 + 3 would be 57
+         * 
+         * So maybe 3 space per character (30) + same spacing
+         * again between for a total of 8 * 3 =24
+         * 
+         * Also maybe the leading space on the single digit 
+         * to center it in the allowed three :)
+         * 
         $expected = <<<EOD
                             1                            
                          1     1                         
