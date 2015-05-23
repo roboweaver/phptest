@@ -75,13 +75,7 @@ class Pascal {
      * Figure out the total row padding size
      */
     public function getPaddingSize($number) {
-        // For integer of 10
-        // Max line size = integer * max size number = 30
-        // 
-        // for integer of 5
-        // Max line size = integer * max size number = 10
-        
-        return ($this->getMaxNumberLength() * ($this->integer - $number))/2;
+        return (($this->getMaxNumberLength() * ($this->integer - $number))/2);
     }
 
     /**
