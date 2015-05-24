@@ -6,3 +6,4 @@ source/html/.idea/*
 *.DS_Store
 /nbproject/private/
 /nbproject/
+/tasks/nbproject/private/
