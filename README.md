@@ -1,4 +1,4 @@
-PHP Test
+PHP Test [![Build Status](https://travis-ci.org/roboweaver/phptest.svg?branch=master)](https://travis-ci.org/roboweaver/phptest)
 ========
 
 This repo is aimed at making it easy to formally specify some coding challenges that can be worked on by newer coders and/or new applicants.
