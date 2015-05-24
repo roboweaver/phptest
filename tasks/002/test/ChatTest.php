@@ -1,4 +1,7 @@
 <?php
+// This is so it will run in the IDE 
+ini_set('include_path', '.:../');
+
 require_once('lib/Chat.php');
 class ChatTest extends PHPUnit_Framework_TestCase {
   public function testSimpleMessaging(){
