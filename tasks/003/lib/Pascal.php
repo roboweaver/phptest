@@ -6,6 +6,11 @@ class Pascal {
         $this->integer = $integer;
     }
 
+    /**
+     * Output the formatted triangle
+     * 
+     * @return string
+     */
     public function output() {
         $return = "";
         // Set up an array with length of one
@@ -16,17 +21,22 @@ class Pascal {
         for ($i = 1; $i <= $this->integer; $i++) {
             // Get the row for this line ...
             $row = $this->getRow($i, $row, $previous);
+            
             // Pad it with the right number of spaces
             $append = $this->pad($row, $i);
+            
             $return .= $append;
             if ($i < $this->integer) {
                 // Append the output
                 $return .= "\n";
             }
+            
             // Set the previous array to what we need
             $previous = $row;
+            
             // Clear out the row array
             $row = array();
+            
             // Add one element so we match lengths
             $previous[] = 0;
         }
@@ -38,10 +48,10 @@ class Pascal {
      * Return a row based on the current line and the previous
      * row's contents
      * 
-     * @param type $i
-     * @param type $row
-     * @param type $previous
-     * @return type
+     * @param number $i
+     * @param array $row 
+     * @param array $previous
+     * @return array that represents the new row
      */
     public function getRow($i, $row, $previous) {
         $row[0] = 1;
@@ -54,28 +64,21 @@ class Pascal {
     /**
      * Pad the row with leading spaces
      * 
-     * @param type $row
-     * @param type $number
-     * @return type
+     * @param array $row
+     * @param number $number
+     * @return string representing the padded row
      */
     public function pad($row, $number) {
-        return str_repeat(' ', $this->getPaddingSize($number)) . $this->concatAndPad($row, $number);
+        return $this->concatAndPad($row, $number);
     }
 
     /**
      * Figure out the biggest number we can get ...
      * 
-     * @return type
+     * @return number representing the largest size
      */
     public function getMaxNumberLength() {
-        return strlen(pow(2, $this->integer));
-    }
-
-    /**
-     * Figure out the total row padding size
-     */
-    public function getPaddingSize($number) {
-        return (($this->getMaxNumberLength() * ($this->integer - $number))/2);
+        return strlen(pow(2, $this->integer - 2));
     }
 
     /**
@@ -87,46 +90,66 @@ class Pascal {
      * So for an integer we expect 3 digits as the largest number, a single 
      * digit number will get two spaces of pad.
      * 
+     * @return String that is as long as the largest number
      */
-    public function padNumber($number) {
-        $return = "";
-        // figure out how many spaces we need to add after this 
-        for ($i = 0; $i < $this->getMaxNumberLength() - strlen($number); $i++) {
-            $return .= " ";
-        }
-        return $return;
+    public function paddingSpaces() {
+        return str_repeat(" ", $this->getMaxNumberLength());
     }
 
     /**
      * Return the padding for this value ...
      * 
-     * @param type $row
-     * @return type
+     * @param array $row
+     * @return String of numbers with padding
      */
     public function concatAndPad($row, $number) {
         $return = "";
         $size = count($row);
         $itemCount = 1;
         foreach ($row as $value) {
-            $return .= $value;
+            $return .= $this->formatNumber($value);
             if ($itemCount++ < $size) {
-                $return .= $this->padNumber($value);
-            } else {
-                $return .= str_repeat(' ', $this->getPaddingSize($number));
+                $return .= $this->paddingSpaces();
             }
         }
-        return $return;
+
+        return $this->center($return);
     }
-    
+
+    /**
+     * Center a string in a specified length 
+     * @param string $string
+     * @param number $length
+     * @return string with original string centered in it
+     */
+    public function center($string, $length = 0) {
+        if ($length == 0) {
+            $length = $this->getLengthOfRow();
+        }
+        // Just in case we're trying to center something that is too big
+        if (strlen($string) >= $length){ return $string; }
+        $padNeeded = $length - strlen($string);
+        $padHalf = $padNeeded / 2;
+        return str_repeat(' ', floor($padHalf)) . $string . str_repeat(' ', round($padHalf));
+    }
+
     /**
      * Format the number to be centered in the getMaxNumberLength()
      * @param type $numberParam
      */
     public function formatNumber($numberParam) {
-      $padNeeded = $this->getMaxNumberLength() - strlen($numberParam);
-      $padHalf = $padNeeded / 2;
-      return str_repeat(' ', floor($padHalf)) . $numberParam . str_repeat(' ', round($padHalf));
-        
+        return $this->center($numberParam, $this->getMaxNumberLength());
     }
+
+    /**
+     * Figure out the row width using the total rows and the maximum number size
+     * for those rows.
+     * 
+     * @return number which is the size of the rows.
+     */
+    public function getLengthOfRow() {
+        return (2 * ($this->integer) - 1) * ($this->getMaxNumberLength());
+    }
+
 
 }
