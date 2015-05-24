@@ -1,4 +1,5 @@
 <?php
+
 // This is so it will run in the IDE 
 ini_set('include_path', '.:../');
 
@@ -43,8 +44,11 @@ EOD;
          * 
          * Also maybe the leading space on the single digit 
          * to center it in the allowed three :)
-         * 
-        $expected = <<<EOD
+         */ 
+        /**
+         * This is what was here originally
+         */
+          $expected = <<<EOD
                             1                            
                          1     1                         
                       1     2     1                      
@@ -56,6 +60,9 @@ EOD;
     1     8    28    56    70    56    28     8     1    
  1     9    36    84    126   126   84    36     9     1 
 EOD;
+
+        /**
+         * And this is what works now ...
          */
         $expected = <<<EOD
                   1                  
@@ -78,84 +85,100 @@ EOD;
      */
     function testGetRow() {
         $pascal = new Pascal(10);
+        // Test if row 10 works right ..
         $previous = [1, 8, 28, 56, 70, 56, 28, 8, 1, 0];
         $expected = [1, 9, 36, 84, 126, 126, 84, 36, 9, 1];
         $row = array();
         $this->assertEquals($expected, $pascal->getRow(10, $row, $previous));
+        
+        // And row 1
+        $previous = [0];
+        $expected = [1];
+        $this->assertEquals($expected, $pascal->getRow(1, $row, $previous));
+        
     }
-    
+
     /**
      * Test the padding
      */
-    function testPad(){
+    function testPad() {
         $row = [1];
         $pascal = new Pascal(10);
+        $expected = "                            1                            ";
         $expected = "                    1                    ";
         $this->assertEquals($expected, $pascal->pad($row, 0));
-        
     }
-    function testPad1(){
-        $row = [1,1];
+
+    function testPad1() {
+        $row = [1, 1];
         $pascal = new Pascal(10);
+        $expected = "                         1     1                         ";
         $expected = "                  1   1                  ";
         $this->assertEquals($expected, $pascal->pad($row, 1));
-        $row = [1,2,1];
+        $row = [1, 2, 1];
+        $expected = "                      1     2     1                      ";
         $expected = "              1   2   1              ";
         $this->assertEquals($expected, $pascal->pad($row, 3));
-        
-        $row = [1,3,3,1];
+
+        $row = [1, 3, 3, 1];
+        $expected = "                   1     3     3     1                   ";
         $expected = "            1   3   3   1            ";
         $this->assertEquals($expected, $pascal->pad($row, 4));
-        
-        $row = [1,4,6,4,1];
+
+        $row = [1, 4, 6, 4, 1];
+        $expected = "                1     4     6     4     1                ";
         $expected = "          1   4   6   4   1          ";
         $this->assertEquals($expected, $pascal->pad($row, 5));
-        
-        $row = [1,5,10,10,5,1];
+
+        $row = [1, 5, 10, 10, 5, 1];
+        $expected = "             1     5    10    10     5     1             ";
         $expected = "        1   5   10  10  5   1        ";
         $this->assertEquals($expected, $pascal->pad($row, 6));
-        
-        $row = [1,6,15,20,15,6, 1];
+
+        $row = [1, 6, 15, 20, 15, 6, 1];
+        $expected = "          1     6    15    20    15     6     1          ";
         $expected = "      1   6   15  20  15  6   1      ";
         $this->assertEquals($expected, $pascal->pad($row, 7));
-        
-        $row = [1,7,21, 35, 35,21,7,1];
+
+        $row = [1, 7, 21, 35, 35, 21, 7, 1];
+        $expected = "       1     7    21    35    35    21     7     1       ";
         $expected = "    1   7   21  35  35  21  7   1    ";
         $this->assertEquals($expected, $pascal->pad($row, 8));
-        
+
         $row = [1, 8, 28, 56, 70, 56, 28, 8, 1, 0];
+        $expected = "    1     8    28    56    70    56    28     8     1    ";
         $expected = "  1   8   28  56  70  56  28  8   1   0  ";
         $this->assertEquals($expected, $pascal->pad($row, 9));
-        
+
         $row = [1, 9, 36, 84, 126, 126, 84, 36, 9, 1];
+        $expected = " 1     9    36    84    126   126   84    36     9     1 ";
         $expected = "1   9   36  84  126 126 84  36  9   1";
         $this->assertEquals($expected, $pascal->pad($row, 10));
-
-        
     }
-    
+
     /**
      * Test to see if we can get a reasonable idea of the size of the number
      * using powers of two
      */
-    function testGetMaxNumberLength(){
+    function testGetMaxNumberLength() {
         $pascal = new Pascal(10);
         $expected = 4;
         $this->assertEquals($expected, $pascal->getMaxNumberLength());
     }
+
     /**
      * Test for smaller number
      */
-    function testGetMaxNumberLength5(){
+    function testGetMaxNumberLength5() {
         $pascal = new Pascal(5);
         $expected = 2;
         $this->assertEquals($expected, $pascal->getMaxNumberLength());
     }
-    
+
     /**
      * Test if we get the right padding size
      */
-    function testGetPaddingSize(){
+    function testGetPaddingSize() {
         $pascal = new Pascal(10);
         $expected = 0;
         $this->assertEquals($expected, $pascal->getPaddingSize(10));
@@ -164,16 +187,33 @@ EOD;
         $pascal = new Pascal(5);
         $this->assertEquals(4, $pascal->getPaddingSize(1));
     }
-    
+
     /**
      * Test if we get the right number of spaces
      */
-    function testPadNumber(){
+    function testPadNumber() {
         $pascal = new Pascal(10);
         $expected = 1;
         $this->assertEquals($expected, strlen($pascal->padNumber(126)));
         $expected = 3;
         $this->assertEquals($expected, strlen($pascal->padNumber(1)));
+    }
+
+    /**
+     * Test formatting the number ...
+     */
+    function testFormatNumber() {
+        $pascal = new Pascal(30);
+        $expected = "    1     ";
+        $this->assertEquals($expected, $pascal->formatNumber(1));
+
+        $pascal = new Pascal(10);
+        $expected = " 1  ";
+        $this->assertEquals($expected, $pascal->formatNumber(1));
+
+        $pascal = new Pascal(5);
+        $expected = "1 ";
+        $this->assertEquals($expected, $pascal->formatNumber(1));
     }
 
 }

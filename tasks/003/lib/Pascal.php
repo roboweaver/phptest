@@ -117,5 +117,16 @@ class Pascal {
         }
         return $return;
     }
+    
+    /**
+     * Format the number to be centered in the getMaxNumberLength()
+     * @param type $numberParam
+     */
+    public function formatNumber($numberParam) {
+      $padNeeded = $this->getMaxNumberLength() - strlen($numberParam);
+      $padHalf = $padNeeded / 2;
+      return str_repeat(' ', floor($padHalf)) . $numberParam . str_repeat(' ', round($padHalf));
+        
+    }
 
 }
